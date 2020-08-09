@@ -7,8 +7,14 @@ import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.TtsRequest.Status;
 
 import com.robotemi.sdk.Robot.TtsListener;
+import com.robotemi.sdk.Robot.AsrListener;
+import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 
-public class RobotApi implements TtsListener {
+import org.jetbrains.annotations.NotNull;
+
+public class RobotApi implements TtsListener,
+                                 AsrListener,
+                                 OnGoToLocationStatusChangedListener {
 
     private Robot robot;
 
@@ -17,6 +23,7 @@ public class RobotApi implements TtsListener {
     RobotApi (Robot robotInstance) {
         robot = robotInstance;
         robot.addTtsListener(this);
+        robot.addOnGoToLocationStatusChangedListener(this);
     }
 
     public void speak(String sentence) {
@@ -31,10 +38,22 @@ public class RobotApi implements TtsListener {
         robot.goTo(location);
     }
 
+    @Override
     public void onTtsStatusChanged(TtsRequest ttsRequest) {
         if (ttsRequest.getStatus() == Status.COMPLETED) {
             server.broadcast("TTS_COMPLETED/" + ttsRequest.getSpeech());
         }
     }
 
+    @Override
+    public void onGoToLocationStatusChanged(String location, @GoToLocationStatus String status, int descriptionId, String description) {
+        if (status == "complete") {
+            server.broadcast("GOTO_COMPLETED/" + location);
+        }
+    }
+
+    @Override
+    public void onAsrResult(@NotNull String text) {
+        server.broadcast("ASR_COMPLETED/" + text);
+    }
 }

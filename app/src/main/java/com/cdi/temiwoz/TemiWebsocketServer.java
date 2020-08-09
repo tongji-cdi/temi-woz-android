@@ -67,11 +67,7 @@ public class TemiWebsocketServer extends WebSocketServer {
                 robot.gotoLocation(cmd.getString("location"));
 
             }
-            /*
-            } else if (cmd.getString("cmd").equals("disconnect")) {
-                pDialog.show();
 
-            }*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
