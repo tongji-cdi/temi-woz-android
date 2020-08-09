@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/SkillTheme">
 
+        <meta-data android:name="com.robotemi.sdk.metadata.KIOSK" android:value="TRUE" />
+        <meta-data android:name="@string/metadata_kiosk" android:value="TRUE" />
+        <meta-data android:name="@string/metadata_override_nlu" android:value="TRUE" />
+
         <meta-data
             android:name="com.robotemi.sdk.metadata.SKILL"
             android:value="@string/app_name" />
@@ -20,9 +24,6 @@
         <meta-data
             android:name="com.robotemi.sdk.metadata.ACTIONS"
             android:value="debug.test" />
-
-        <meta-data android:name="@string/metadata_kiosk" android:value="TRUE" />
-        <meta-data android:name="@string/metadata_override_nlu" android:value="TRUE" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

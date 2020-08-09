@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
         super.onResume();
         // Add listeners
         robot.addOnRobotReadyListener(this);
+        robot.showTopBar();
 
         // Add WebSocket server
         int port = 8175;
@@ -58,14 +59,22 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
     protected void onPause() {
         // Stop listeners
         robot.removeOnRobotReadyListener(this);
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop listeners
+        robot.removeOnRobotReadyListener(this);
         // Stop WebSocket Server
         try {
             server.stop(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        super.onPause();
+        robotApi.stop();
     }
 
     @Override

@@ -23,6 +23,7 @@ public class RobotApi implements TtsListener,
     RobotApi (Robot robotInstance) {
         robot = robotInstance;
         robot.addTtsListener(this);
+        robot.addAsrListener(this);
         robot.addOnGoToLocationStatusChangedListener(this);
     }
 
@@ -47,6 +48,7 @@ public class RobotApi implements TtsListener,
 
     @Override
     public void onGoToLocationStatusChanged(String location, @GoToLocationStatus String status, int descriptionId, String description) {
+        server.broadcast(status);
         if (status == "complete") {
             server.broadcast("GOTO_COMPLETED/" + location);
         }
@@ -55,5 +57,12 @@ public class RobotApi implements TtsListener,
     @Override
     public void onAsrResult(@NotNull String text) {
         server.broadcast("ASR_COMPLETED/" + text);
+        robot.finishConversation();
+    }
+
+    public void stop() {
+        //robot.removeTtsListener(this);
+        //robot.removeAsrListener(this);
+        //robot.removeOnGoToLocationStatusChangedListener(this);
     }
 }
