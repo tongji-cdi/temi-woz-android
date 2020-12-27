@@ -1,13 +1,24 @@
 package com.cdi.temiwoz;
 
 import androidx.appcompat.app.AppCompatActivity;
+// import androidx.recyclerview.widget.OrientationHelper;
 
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import java.net.UnknownHostException;
+
+/*
+import com.facebook.litho.Component;
+import com.facebook.litho.ComponentContext;
+import com.facebook.litho.LithoView;
+import com.facebook.litho.sections.SectionContext;
+import com.facebook.litho.sections.widget.ListRecyclerConfiguration;
+import com.facebook.litho.sections.widget.RecyclerCollectionComponent;
+*/
 
 import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
@@ -18,23 +29,31 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
     private RobotApi robotApi;
     TemiWebsocketServer server;
 
-    ProgressDialog pDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        /*
+        final ComponentContext context = new ComponentContext(this);
+
+        final Component component = RecyclerCollectionComponent.create(context)
+                .recyclerConfiguration(ListRecyclerConfiguration.create().orientation(OrientationHelper.HORIZONTAL).build())
+                .disablePTR(true)
+                .section(OntologyList.create(new SectionContext(context)).build())
+                .build();
+
+        setContentView(LithoView.create(context, component));
+         */
+        WebView myWebView = new WebView(this);
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.loadUrl("http://10.0.1.10:5000/static/index.html");
+        setContentView(myWebView);
+
 
         robot = Robot.getInstance();
         robotApi = new RobotApi(robot);
-        pDialog = new ProgressDialog(this);
-        pDialog.setTitle("Temi WOZ platform");
-        pDialog.setMessage("Waiting for a connection...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-
-        // pDialog.show();
     }
 
     @Override

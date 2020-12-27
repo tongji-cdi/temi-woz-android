@@ -25,6 +25,7 @@ public class RobotApi implements TtsListener,
         robot.addTtsListener(this);
         robot.addAsrListener(this);
         robot.addOnGoToLocationStatusChangedListener(this);
+        // robot.toggleNavigationBillboard(false);
     }
 
     public void speak(String sentence) {
@@ -48,8 +49,7 @@ public class RobotApi implements TtsListener,
 
     @Override
     public void onGoToLocationStatusChanged(String location, @GoToLocationStatus String status, int descriptionId, String description) {
-        server.broadcast(status);
-        if (status == "complete") {
+        if (status.equals("complete")) {
             server.broadcast("GOTO_COMPLETED/" + location);
         }
     }
