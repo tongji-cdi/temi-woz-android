@@ -9,3 +9,6 @@ In short, you should connect to Temi on your local network and push install the 
 adb connect <TEMI_IP_ADDRESS>:5555
 adb install [option] PATH_OF_APK
 ```
+
+## Controlling the robot
+...More to come!
