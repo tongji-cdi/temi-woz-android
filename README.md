@@ -14,7 +14,7 @@ adb install [option] PATH_OF_APK
 There are two ways to control the robot: using pre-made Node-RED nodes and using WebSocket messages. Currently, we support controlling Temi to speak, ask questions, and go to pre-defined locations.
 
 ### Using Node-RED
-The easiest way is to [install Node-RED](https://nodered.org/docs/getting-started/local), and use the nodes we developed for this purpose. They can be found [here](https://gist.github.com/shaunabanana/1c70946826b08cb46c49c8e8b105a726). Once you start Node-RED, import the JSON file and you should see something like this:
+The easiest way is to [install Node-RED](https://nodered.org/docs/getting-started/local), and use the nodes we developed for this purpose. A JSON file containing the nodes can be found [here](https://gist.github.com/shaunabanana/1c70946826b08cb46c49c8e8b105a726). Once you start Node-RED, import the JSON file and you should see something like this:
 
 ![A screenshot of the Node-RED interface](https://gist.githubusercontent.com/shaunabanana/1c70946826b08cb46c49c8e8b105a726/raw/a68029977d63b68806bb839ebe2e3f338be5e00f/screenshot.png)
 
