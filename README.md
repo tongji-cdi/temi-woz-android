@@ -41,7 +41,7 @@ Upon receiving the command, Temi will immediately echo the sentence back to your
   "sentence": "The question you want Temi to ask"
 }
 ```
-This is similar to speaking, except Temi will start to recognize user speech after speaking. When the user finishes speaking and the recognition is completed, you will get an message back in the form of `ASR_COMPLETED/The user's answer to the question`.
+This is similar to speaking, except Temi will start to recognize user speech saying the question. When the user finishes answering and the recognition is completed, you will get an message back in the form of `ASR_COMPLETED/The user's answer to the question`.
 
 #### Going to a location
 ```json
