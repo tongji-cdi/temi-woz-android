@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
 
     private Robot robot;
     private RobotApi robotApi;
+    WebView interfaceView;
     TemiWebsocketServer server;
 
 
@@ -34,22 +35,10 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        final ComponentContext context = new ComponentContext(this);
-
-        final Component component = RecyclerCollectionComponent.create(context)
-                .recyclerConfiguration(ListRecyclerConfiguration.create().orientation(OrientationHelper.HORIZONTAL).build())
-                .disablePTR(true)
-                .section(OntologyList.create(new SectionContext(context)).build())
-                .build();
-
-        setContentView(LithoView.create(context, component));
-         */
-        WebView myWebView = new WebView(this);
-        WebSettings webSettings = myWebView.getSettings();
+        interfaceView = new WebView(this);
+        WebSettings webSettings = interfaceView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://10.0.1.10:5000/static/index.html");
-        setContentView(myWebView);
+        setContentView(interfaceView);
 
 
         robot = Robot.getInstance();
@@ -70,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        server.addActivity(this);
         server.addRobotApi(robotApi);
         server.start();
     }
@@ -106,5 +96,9 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void setInterfaceUrl(String url) {
+        interfaceView.loadUrl(url);
     }
 }

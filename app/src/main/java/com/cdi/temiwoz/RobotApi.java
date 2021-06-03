@@ -11,6 +11,7 @@ import com.robotemi.sdk.Robot.AsrListener;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.*;
 
 public class RobotApi implements TtsListener,
                                  AsrListener,
@@ -20,6 +21,13 @@ public class RobotApi implements TtsListener,
 
     public TemiWebsocketServer server;
 
+    String speak_id;
+    String ask_id;
+    String goto_id;
+    String tilt_id;
+    String turn_id;
+
+
     RobotApi (Robot robotInstance) {
         robot = robotInstance;
         robot.addTtsListener(this);
@@ -28,35 +36,70 @@ public class RobotApi implements TtsListener,
         // robot.toggleNavigationBillboard(false);
     }
 
-    public void speak(String sentence) {
+    public void speak(String sentence, String id) {
         robot.speak(TtsRequest.create(sentence, false));
+        speak_id = id;
     }
 
-    public void askQuestion(String sentence) {
+    public void askQuestion(String sentence, String id) {
         robot.askQuestion(sentence);
+        ask_id = id;
     }
 
-    public void gotoLocation(String location) {
+    public void gotoLocation(String location, String id) {
         robot.goTo(location);
+        goto_id = id;
+    }
+
+    public void tiltAngle(int angle, String id) {
+        robot.tiltAngle(angle);
+        tilt_id = id;
+        try {
+            server.broadcast(new JSONObject().put("id", tilt_id).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void turnBy(int angle, String id) {
+        robot.turnBy(angle);
+        turn_id = id;
+        try {
+            server.broadcast(new JSONObject().put("id", turn_id).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onTtsStatusChanged(TtsRequest ttsRequest) {
         if (ttsRequest.getStatus() == Status.COMPLETED) {
-            server.broadcast("TTS_COMPLETED/" + ttsRequest.getSpeech());
+            try {
+                server.broadcast(new JSONObject().put("id", speak_id).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void onGoToLocationStatusChanged(String location, @GoToLocationStatus String status, int descriptionId, String description) {
         if (status.equals("complete")) {
-            server.broadcast("GOTO_COMPLETED/" + location);
+            try {
+                server.broadcast(new JSONObject().put("id", goto_id).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void onAsrResult(@NotNull String text) {
-        server.broadcast("ASR_COMPLETED/" + text);
+        try {
+            server.broadcast(new JSONObject().put("id", ask_id).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         robot.finishConversation();
     }
 

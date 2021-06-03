@@ -21,6 +21,7 @@ import org.json.*;
 
 public class TemiWebsocketServer extends WebSocketServer {
 
+    MainActivity activity;
     RobotApi robot;
 
     public TemiWebsocketServer( int port ) throws UnknownHostException {
@@ -33,6 +34,10 @@ public class TemiWebsocketServer extends WebSocketServer {
 
     public TemiWebsocketServer(int port, Draft_6455 draft) {
         super( new InetSocketAddress( port ), Collections.<Draft>singletonList(draft));
+    }
+
+    public void addActivity(MainActivity someActivity) {
+        activity = someActivity;
     }
 
     public void addRobotApi(RobotApi api) {
@@ -54,17 +59,34 @@ public class TemiWebsocketServer extends WebSocketServer {
     public void onMessage( WebSocket conn, String message ) {
 
         try {
-            JSONObject cmd = new JSONObject(message);
+            final JSONObject cmd = new JSONObject(message);
 
-            if (cmd.getString("cmd").equals("speak")) {
-                robot.speak(cmd.getString("sentence"));
+            if (cmd.getString("command").equals("interface")) {
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+                            activity.setInterfaceUrl(cmd.getString("url"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } else if (cmd.getString("command").equals("speak")) {
+                robot.speak(cmd.getString("sentence"), cmd.getString("id"));
                 broadcast( message );
 
-            } else if (cmd.getString("cmd").equals("ask")) {
-                robot.askQuestion(cmd.getString("sentence"));
+            } else if (cmd.getString("command").equals("ask")) {
+                robot.askQuestion(cmd.getString("sentence"), cmd.getString("id"));
 
-            } else if (cmd.getString("cmd").equals("goto")) {
-                robot.gotoLocation(cmd.getString("location"));
+            } else if (cmd.getString("command").equals("goto")) {
+                robot.gotoLocation(cmd.getString("location"), cmd.getString("id"));
+
+            } else if (cmd.getString("command").equals("tilt")) {
+                robot.tiltAngle(cmd.getInt("angle"), cmd.getString("id"));
+
+            } else if (cmd.getString("command").equals("turn")) {
+                robot.turnBy(cmd.getInt("angle"), cmd.getString("id"));
 
             }
 
