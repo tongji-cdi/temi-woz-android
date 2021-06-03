@@ -18,17 +18,26 @@ The easiest way is to [install Node-RED](https://nodered.org/docs/getting-starte
 
 ![A screenshot of the Node-RED interface](https://gist.githubusercontent.com/shaunabanana/1c70946826b08cb46c49c8e8b105a726/raw/a68029977d63b68806bb839ebe2e3f338be5e00f/screenshot.png)
 
-You might notice that there are more nodes than the three promised above. The nodes about knowledge graph and interfaces are used in the paper to control a custom-built KG interface. You can find the code for the interface [here](https://github.com/tongji-cdi/temi-woz-frontend).
+You might notice that there are more nodes than the three promised above. The nodes about knowledge graph and interfaces are used in the paper to control a custom-built KG interface. You can find the code for the interface [here](https://github.com/tongji-cdi/temi-kg-ui).
 
 ### Using WebSocket
 You can also directly connect to the App and send control messages via WebSocket. All messages are in JSON format. 
 
 Start by connecting to `ws://YOUR_TEMI_IP_ADDRESS:8175`. The port can be changed by modifying the `int port = 8175;` line in the `onResume()` method in `MainActivity.java`. Upon connection, you should receive a message saying "Temi is ready to receive commands!". Then you can control Temi by sending commands in the format below:
 
+#### Loading an interface URL
+```json
+{
+  "command": "interface",
+  "url": "URL"
+}
+```
+Upon receiving the command, Temi will immediately echo the sentence back to your client, and begin to speak. You can use this to check if the sentences are in order. When Temi finishes speaking, another message will be sent to you in the format of `TTS_COMPLETED/The sentence you want Temi to say`. This will let you know when to proceed to the next action.
+
 #### Speaking
 ```json
 {
-  "cmd": "speak",
+  "command": "speak",
   "sentence": "The sentence you want Temi to say"
 }
 ```
@@ -37,7 +46,7 @@ Upon receiving the command, Temi will immediately echo the sentence back to your
 #### Asking a question
 ```json
 {
-  "cmd": "ask",
+  "command": "ask",
   "sentence": "The question you want Temi to ask"
 }
 ```
@@ -46,7 +55,7 @@ This is similar to speaking, except Temi will start to recognize user speech say
 #### Going to a location
 ```json
 {
-  "cmd": "goto",
+  "command": "goto",
   "location": "The exact name of the location as set in Temi"
 }
 ```
