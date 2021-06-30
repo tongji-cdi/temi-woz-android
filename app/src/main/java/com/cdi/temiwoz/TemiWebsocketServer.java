@@ -87,7 +87,6 @@ public class TemiWebsocketServer extends WebSocketServer {
 
             } else if (cmd.getString("command").equals("turn")) {
                 robot.turnBy(cmd.getInt("angle"), cmd.getString("id"));
-
             }
 
         } catch (JSONException e) {

@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
         webSettings.setJavaScriptEnabled(true);
         setContentView(interfaceView);
 
-
         robot = Robot.getInstance();
         robotApi = new RobotApi(robot);
     }

@@ -3,10 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Desktop-temi-woz-android-Temi-WOz-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/Desktop-temi-woz-android-Temi-WOz-Android.iml" group="Temi-WOz-Android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Development-temi-woz-android-Temi-WOz-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/Development-temi-woz-android-Temi-WOz-Android.iml" group="Temi-WOz-Android" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Temi-WOz-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/Temi-WOz-Android.iml" group="Temi-WOz-Android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Temi-WOz-Android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Temi-WOz-Android-app.iml" group="Temi-WOz-Android/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Temi-WOz-Android/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/temi-woz-android-Temi-WOz-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/temi-woz-android-Temi-WOz-Android.iml" group="Temi-WOz-Android" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/temi-woz-android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/temi-woz-android-app.iml" group="Temi-WOz-Android/app" />
     </modules>
   </component>
 </project>
