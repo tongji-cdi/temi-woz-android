@@ -96,7 +96,7 @@ public class RobotApi implements TtsListener,
     @Override
     public void onAsrResult(@NotNull String text) {
         try {
-            server.broadcast(new JSONObject().put("id", ask_id).toString());
+            server.broadcast(new JSONObject().put("id", ask_id).put("reply",text).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
