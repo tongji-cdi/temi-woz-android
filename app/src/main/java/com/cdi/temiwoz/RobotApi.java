@@ -6,12 +6,19 @@ import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.TtsRequest.Status;
 
+import com.robotemi.sdk.constants.*;
+import com.robotemi.sdk.telepresence.*;
 import com.robotemi.sdk.Robot.TtsListener;
 import com.robotemi.sdk.Robot.AsrListener;
+import com.robotemi.sdk.UserInfo;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class RobotApi implements TtsListener,
                                  AsrListener,
@@ -26,6 +33,8 @@ public class RobotApi implements TtsListener,
     String goto_id;
     String tilt_id;
     String turn_id;
+    String getContact_id;
+    String call_id;
 
 
     RobotApi (Robot robotInstance) {
@@ -40,6 +49,7 @@ public class RobotApi implements TtsListener,
         robot.speak(TtsRequest.create(sentence, false));
         speak_id = id;
     }
+
 
     public void askQuestion(String sentence, String id) {
         robot.askQuestion(sentence);
@@ -69,6 +79,26 @@ public class RobotApi implements TtsListener,
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getContact(String id){
+        List<UserInfo> list = new ArrayList<>();
+        list = robot.getAllContact();
+
+        getContact_id = id;
+
+        try{
+            server.broadcast(new JSONObject().put("id", getContact_id).put("userinfo",list).toString());
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void startCall(String userId, String id){
+        call_id = id;
+        robot.startTelepresence("孙老师", userId);
+
+
     }
 
     @Override

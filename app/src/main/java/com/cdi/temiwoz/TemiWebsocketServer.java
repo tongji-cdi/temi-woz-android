@@ -61,6 +61,8 @@ public class TemiWebsocketServer extends WebSocketServer {
         try {
             final JSONObject cmd = new JSONObject(message);
 
+
+
             if (cmd.getString("command").equals("interface")) {
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -88,6 +90,10 @@ public class TemiWebsocketServer extends WebSocketServer {
             } else if (cmd.getString("command").equals("turn")) {
                 robot.turnBy(cmd.getInt("angle"), cmd.getString("id"));
 
+            } else if (cmd.getString("command").equals("getContact")){
+                robot.getContact(cmd.getString("id"));
+            } else if (cmd.getString("command").equals("call")) {
+                robot.startCall(cmd.getString("userId"),cmd.getString("id"));
             }
 
         } catch (JSONException e) {
