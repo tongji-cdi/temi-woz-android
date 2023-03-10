@@ -164,11 +164,21 @@ public class RobotApi implements TtsListener,
         }
     }
 
+    public void checkDetectionMode(String id){
+        boolean isDetectionModeon = robot.isDetectionModeOn();
+        try {
+            server.broadcast(new JSONObject().put("CheckDetectionState:", isDetectionModeon).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public void onDetectionStateChanged(int state){
         try {
-            server.broadcast(new JSONObject().put("detectionState", state).toString());
+            server.broadcast(new JSONObject().put("ChangeDetectionStateTo: ", state).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -116,6 +116,9 @@ public class TemiWebsocketServer extends WebSocketServer {
                 case "setDetectionMode":
                     robot.setDetectionMode(cmd.getBoolean("on"), cmd.getString("id"));
                     break;
+                case "checkDetectionMode":
+                    robot.checkDetectionMode(cmd.getString("id"));
+                    break;
                 default:
                     System.out.println("Invalid command");
             }
