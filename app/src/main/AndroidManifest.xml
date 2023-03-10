@@ -19,6 +19,11 @@
         <meta-data android:name="@string/metadata_override_nlu" android:value="TRUE" />
 
         <meta-data
+            android:name="@string/metadata_permissions"
+            android:value="com.robotemi.permission.settings,
+                       com.robotemi.permission.face_recognition" />
+
+        <meta-data
             android:name="com.robotemi.sdk.metadata.SKILL"
             android:value="@string/app_name" />
 

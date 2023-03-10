@@ -16,6 +16,7 @@ import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener;
 import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener;
 import com.robotemi.sdk.UserInfo;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
+import com.robotemi.sdk.listeners.OnDetectionStateChangedListener;
 
 
 
@@ -28,7 +29,10 @@ import java.util.List;
 
 public class RobotApi implements TtsListener,
                                  AsrListener,
-                                 OnGoToLocationStatusChangedListener, OnBeWithMeStatusChangedListener,OnConstraintBeWithStatusChangedListener
+                                 OnGoToLocationStatusChangedListener,
+        OnBeWithMeStatusChangedListener,
+        OnConstraintBeWithStatusChangedListener,
+        OnDetectionStateChangedListener
 {
 
     private Robot robot;
@@ -55,21 +59,46 @@ public class RobotApi implements TtsListener,
 
     }
 
-    public void speak(String sentence, String id) {
-        robot.speak(TtsRequest.create(sentence, false));
-        speak_id = id;
-    }
 
 
-    public void askQuestion(String sentence, String id) {
-        robot.askQuestion(sentence);
-        ask_id = id;
-    }
-
+    // location related
     public void gotoLocation(String location, String id) {
         robot.goTo(location);
         goto_id = id;
     }
+    public void saveLocation(String location, String id){
+        boolean finished = robot.saveLocation(location);
+
+        try {
+            server.broadcast(new JSONObject().put("saveLocation",finished).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteLocation(String location, String id){
+        boolean finished = robot.saveLocation(location);
+
+        try {
+            server.broadcast(new JSONObject().put("deleteLocation",finished).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //movement..
+    public void stopMovement(String id){
+        robot.stopMovement();
+    }
+
+    public void beWithMe(String id){
+        robot.beWithMe();
+    }
+
+    public void constraintBeWith(String id){
+        robot.constraintBeWith();
+    }
+
 
     public void tiltAngle(int angle, String id) {
         robot.tiltAngle(angle);
@@ -91,6 +120,7 @@ public class RobotApi implements TtsListener,
         }
     }
 
+    // call someone
     public void getContact(String id){
         List<UserInfo> list = new ArrayList<>();
         list = robot.getAllContact();
@@ -111,16 +141,37 @@ public class RobotApi implements TtsListener,
 
     }
 
+    // user interaction
     public void wakeup(String id){
         robot.wakeup();
     }
-
-    public void beWithMe(String id){
-        robot.beWithMe();
+    public void speak(String sentence, String id) {
+        robot.speak(TtsRequest.create(sentence, false));
+        speak_id = id;
     }
 
-    public void constraintBeWith(String id){
-        robot.constraintBeWith();
+    public void askQuestion(String sentence, String id) {
+        robot.askQuestion(sentence);
+        ask_id = id;
+    }
+
+    public void setDetectionMode(boolean on, String id){
+        robot.setDetectionModeOn(on);
+        try {
+            server.broadcast(new JSONObject().put("detection mode", on).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onDetectionStateChanged(int state){
+        try {
+            server.broadcast(new JSONObject().put("detectionState", state).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -142,7 +193,7 @@ public class RobotApi implements TtsListener,
             e.printStackTrace();
         }
     }
-    
+
 
 
     @Override

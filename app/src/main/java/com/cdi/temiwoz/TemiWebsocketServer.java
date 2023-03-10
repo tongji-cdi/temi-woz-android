@@ -104,6 +104,18 @@ public class TemiWebsocketServer extends WebSocketServer {
                 case "wakeup":
                     robot.wakeup(cmd.getString("id"));
                     break;
+                case "saveLocation":
+                    robot.saveLocation(cmd.getString("locationName"), cmd.getString("id"));
+                    break;
+                case "deleteLocation":
+                    robot.deleteLocation(cmd.getString("locationName"), cmd.getString("id"));
+                    break;
+                case "stopMovement":
+                    robot.stopMovement(cmd.getString("id"));
+                    break;
+                case "setDetectionMode":
+                    robot.setDetectionMode(cmd.getBoolean("on"), cmd.getString("id"));
+                    break;
                 default:
                     System.out.println("Invalid command");
             }
