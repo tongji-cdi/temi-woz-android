@@ -22,6 +22,7 @@ import com.facebook.litho.sections.widget.RecyclerCollectionComponent;
 
 import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
+import com.robotemi.sdk.listeners.*;
 
 public class MainActivity extends AppCompatActivity implements OnRobotReadyListener {
 
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
     private RobotApi robotApi;
     WebView interfaceView;
     TemiWebsocketServer server;
+
+
 
 
     @Override

@@ -2,16 +2,22 @@ package com.cdi.temiwoz;
 
 import android.content.pm.PackageManager;
 
+
 import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.TtsRequest.Status;
+
 
 import com.robotemi.sdk.constants.*;
 import com.robotemi.sdk.telepresence.*;
 import com.robotemi.sdk.Robot.TtsListener;
 import com.robotemi.sdk.Robot.AsrListener;
+import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener;
+import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener;
 import com.robotemi.sdk.UserInfo;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
+
+
 
 import org.jetbrains.annotations.NotNull;
 import org.json.*;
@@ -22,7 +28,8 @@ import java.util.List;
 
 public class RobotApi implements TtsListener,
                                  AsrListener,
-                                 OnGoToLocationStatusChangedListener {
+                                 OnGoToLocationStatusChangedListener, OnBeWithMeStatusChangedListener,OnConstraintBeWithStatusChangedListener
+{
 
     private Robot robot;
 
@@ -42,7 +49,10 @@ public class RobotApi implements TtsListener,
         robot.addTtsListener(this);
         robot.addAsrListener(this);
         robot.addOnGoToLocationStatusChangedListener(this);
+        robot.addOnBeWithMeStatusChangedListener(this);
+        robot.addOnConstraintBeWithStatusChangedListener(this);
         // robot.toggleNavigationBillboard(false);
+
     }
 
     public void speak(String sentence, String id) {
@@ -100,6 +110,40 @@ public class RobotApi implements TtsListener,
 
 
     }
+
+    public void wakeup(String id){
+        robot.wakeup();
+    }
+
+    public void beWithMe(String id){
+        robot.beWithMe();
+    }
+
+    public void constraintBeWith(String id){
+        robot.constraintBeWith();
+    }
+
+
+    @Override
+    public void onBeWithMeStatusChanged(String status ){
+        try {
+            server.broadcast(new JSONObject().put("BeWithMeStatus", status).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onConstraintBeWithStatusChanged(boolean isConstraint) {
+        try{
+            server.broadcast(new JSONObject().put("isConstraint",isConstraint).toString());
+        }catch (JSONException e ){
+            e.printStackTrace();
+        }
+    }
+    
+
 
     @Override
     public void onTtsStatusChanged(TtsRequest ttsRequest) {

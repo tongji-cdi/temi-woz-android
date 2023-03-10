@@ -58,42 +58,54 @@ public class TemiWebsocketServer extends WebSocketServer {
     @Override
     public void onMessage( WebSocket conn, String message ) {
 
+        conn.send("get a new message resolving...");
         try {
+
             final JSONObject cmd = new JSONObject(message);
 
+            //conn.send("command:" + cmd.getString("command"));
 
 
-            if (cmd.getString("command").equals("interface")) {
-                activity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        try {
-                            activity.setInterfaceUrl(cmd.getString("url"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+            switch (cmd.getString("command")) {
+                case "openURL":
+                    activity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            try {
+                                activity.setInterfaceUrl(cmd.getString("url"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-
-            } else if (cmd.getString("command").equals("speak")) {
-                robot.speak(cmd.getString("sentence"), cmd.getString("id"));
-                broadcast( message );
-
-            } else if (cmd.getString("command").equals("ask")) {
-                robot.askQuestion(cmd.getString("sentence"), cmd.getString("id"));
-
-            } else if (cmd.getString("command").equals("goto")) {
-                robot.gotoLocation(cmd.getString("location"), cmd.getString("id"));
-
-            } else if (cmd.getString("command").equals("tilt")) {
-                robot.tiltAngle(cmd.getInt("angle"), cmd.getString("id"));
-
-            } else if (cmd.getString("command").equals("turn")) {
-                robot.turnBy(cmd.getInt("angle"), cmd.getString("id"));
-
-            } else if (cmd.getString("command").equals("getContact")){
-                robot.getContact(cmd.getString("id"));
-            } else if (cmd.getString("command").equals("call")) {
-                robot.startCall(cmd.getString("userId"),cmd.getString("id"));
+                    });
+                    break;
+                case "speak":
+                    robot.speak(cmd.getString("sentence"), cmd.getString("id"));
+                    conn.send("msg:" + message);
+                    broadcast(message);
+                    break;
+                case "ask":
+                    robot.askQuestion(cmd.getString("sentence"), cmd.getString("id"));
+                    break;
+                case "goto":
+                    robot.gotoLocation(cmd.getString("location"), cmd.getString("id"));
+                    break;
+                case "tilt":
+                    robot.tiltAngle(cmd.getInt("angle"), cmd.getString("id"));
+                    break;
+                case "turn":
+                    robot.turnBy(cmd.getInt("angle"), cmd.getString("id"));
+                    break;
+                case "getContact":
+                    robot.getContact(cmd.getString("id"));
+                    break;
+                case "call":
+                    robot.startCall(cmd.getString("userId"), cmd.getString("id"));
+                    break;
+                case "wakeup":
+                    robot.wakeup(cmd.getString("id"));
+                    break;
+                default:
+                    System.out.println("Invalid command");
             }
 
         } catch (JSONException e) {
