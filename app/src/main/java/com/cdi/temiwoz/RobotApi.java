@@ -32,7 +32,8 @@ public class RobotApi implements TtsListener,
                                  OnGoToLocationStatusChangedListener,
         OnBeWithMeStatusChangedListener,
         OnConstraintBeWithStatusChangedListener,
-        OnDetectionStateChangedListener
+        OnDetectionStateChangedListener,
+        OnMovementStatusChangedListener
 {
 
     private Robot robot;
@@ -227,6 +228,12 @@ public class RobotApi implements TtsListener,
             }
         }
     }
+
+//    @Override
+//    public void onMovementStatusChanged(String type, String status){
+//
+//    }
+
 
     @Override
     public void onAsrResult(@NotNull String text) {

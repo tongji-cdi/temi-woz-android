@@ -80,8 +80,8 @@ public class TemiWebsocketServer extends WebSocketServer {
                     break;
                 case "speak":
                     robot.speak(cmd.getString("sentence"), cmd.getString("id"));
-                    conn.send("msg:" + message);
-                    broadcast(message);
+                    //conn.send("msg:" + message);
+                    //broadcast(message);
                     break;
                 case "ask":
                     robot.askQuestion(cmd.getString("sentence"), cmd.getString("id"));
