@@ -9,6 +9,7 @@ import com.robotemi.sdk.TtsRequest.Status;
 
 
 import com.robotemi.sdk.constants.*;
+import com.robotemi.sdk.listeners.OnMovementStatusChangedListener;
 import com.robotemi.sdk.telepresence.*;
 import com.robotemi.sdk.Robot.TtsListener;
 import com.robotemi.sdk.Robot.AsrListener;
@@ -56,6 +57,7 @@ public class RobotApi implements TtsListener,
         robot.addOnGoToLocationStatusChangedListener(this);
         robot.addOnBeWithMeStatusChangedListener(this);
         robot.addOnConstraintBeWithStatusChangedListener(this);
+        robot.addOnMovementStatusChangedListener(this);
         // robot.toggleNavigationBillboard(false);
 
     }
@@ -112,13 +114,15 @@ public class RobotApi implements TtsListener,
     }
 
     public void turnBy(int angle, String id) {
-        robot.turnBy(angle);
+        robot.turnBy(angle, 1);
         turn_id = id;
-        try {
-            server.broadcast(new JSONObject().put("id", turn_id).toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            server.broadcast(new JSONObject().put("id", turn_id).toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        // 在movement回调中发送消息
     }
 
     // call someone
@@ -209,7 +213,7 @@ public class RobotApi implements TtsListener,
 
     @Override
     public void onTtsStatusChanged(TtsRequest ttsRequest) {
-        if (ttsRequest.getStatus() == Status.COMPLETED) {
+        if (ttsRequest.getStatus() == TtsRequest.Status.COMPLETED) {
             try {
                 server.broadcast(new JSONObject().put("id", speak_id).toString());
             } catch (JSONException e) {
@@ -219,7 +223,7 @@ public class RobotApi implements TtsListener,
     }
 
     @Override
-    public void onGoToLocationStatusChanged(String location, @GoToLocationStatus String status, int descriptionId, String description) {
+    public void onGoToLocationStatusChanged(@NotNull String location, @GoToLocationStatus String status, int descriptionId, String description) {
         if (status.equals("complete")) {
             try {
                 server.broadcast(new JSONObject().put("id", goto_id).toString());
@@ -229,10 +233,23 @@ public class RobotApi implements TtsListener,
         }
     }
 
+
+
 //    @Override
 //    public void onMovementStatusChanged(String type, String status){
 //
 //    }
+
+    @Override
+    public void onMovementStatusChanged(@NotNull String type, String status){
+        if(status.equals("complete")){
+            try {
+                server.broadcast(new JSONObject().put("id", turn_id).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     @Override
