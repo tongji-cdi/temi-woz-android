@@ -58,6 +58,7 @@ public class RobotApi implements TtsListener,
         robot.addOnBeWithMeStatusChangedListener(this);
         robot.addOnConstraintBeWithStatusChangedListener(this);
         robot.addOnMovementStatusChangedListener(this);
+        robot.addOnDetectionStateChangedListener(this);
         // robot.toggleNavigationBillboard(false);
 
     }
@@ -170,9 +171,9 @@ public class RobotApi implements TtsListener,
     }
 
     public void checkDetectionMode(String id){
-        boolean isDetectionModeon = robot.isDetectionModeOn();
+        boolean isDetectionModeOn = robot.isDetectionModeOn();
         try {
-            server.broadcast(new JSONObject().put("CheckDetectionState:", isDetectionModeon).toString());
+            server.broadcast(new JSONObject().put("CheckDetectionState:", isDetectionModeOn).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
