@@ -58,7 +58,7 @@ public class TemiWebsocketServer extends WebSocketServer {
     @Override
     public void onMessage( WebSocket conn, String message ) {
 
-        conn.send("get a new message resolving...");
+        //conn.send("get a new message resolving..." + message);
         try {
 
             final JSONObject cmd = new JSONObject(message);
@@ -118,6 +118,15 @@ public class TemiWebsocketServer extends WebSocketServer {
                     break;
                 case "checkDetectionMode":
                     robot.checkDetectionMode(cmd.getString("id"));
+                    break;
+                case "setTrackUserOn":
+                    robot.setTrackUserOn(cmd.getBoolean("on"), cmd.getString("id"));
+                    break;
+                case "beWithMe":
+                    robot.beWithMe();
+                    break;
+                case "constraintBeWith":
+                    robot.constraintBeWith();
                     break;
                 default:
                     System.out.println("Invalid command");

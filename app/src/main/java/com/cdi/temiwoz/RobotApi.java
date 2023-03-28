@@ -10,6 +10,7 @@ import com.robotemi.sdk.TtsRequest.Status;
 
 import com.robotemi.sdk.constants.*;
 import com.robotemi.sdk.listeners.OnMovementStatusChangedListener;
+import com.robotemi.sdk.permission.Permission;
 import com.robotemi.sdk.telepresence.*;
 import com.robotemi.sdk.Robot.TtsListener;
 import com.robotemi.sdk.Robot.AsrListener;
@@ -163,8 +164,21 @@ public class RobotApi implements TtsListener,
 
     public void setDetectionMode(boolean on, String id){
         robot.setDetectionModeOn(on);
+        System.out.println("set detection mode on");
         try {
             server.broadcast(new JSONObject().put("detection mode", on).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTrackUserOn(boolean on, String id){
+        int ispermise = robot.checkSelfPermission(Permission.SETTINGS);
+        System.out.println(ispermise);
+        robot.setTrackUserOn(on);
+        System.out.println("set track user mode on");
+        try {
+            server.broadcast(new JSONObject().put("track user mode", on).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -179,35 +193,57 @@ public class RobotApi implements TtsListener,
         }
 
     }
+    
+    public void beWithMe(){
+        robot.beWithMe();
+    }
+
+    public void constraintBeWith(){
+        robot.constraintBeWith();
+    }
 
 
     @Override
     public void onDetectionStateChanged(int state){
         try {
-            server.broadcast(new JSONObject().put("ChangeDetectionStateTo: ", state).toString());
+            server.broadcast(new JSONObject().put("event", "onDetectionStateChanged").put("state",state).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
     @Override
     public void onBeWithMeStatusChanged(String status ){
         try {
-            server.broadcast(new JSONObject().put("BeWithMeStatus", status).toString());
+            server.broadcast(new JSONObject().put("event", "onBeWithMeStatusChanged").put("status",status).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // 改为用来替代 detectmode，当检测到人的时候返回消息
+
+//        if (status.equals("start")){
+//            try{
+//                server.broadcast(new JSONObject().put("event","onBeWithMeStatusChanged").put("status",status).toString());
+//            }catch (JSONException e ){
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 
     @Override
     public void onConstraintBeWithStatusChanged(boolean isConstraint) {
+
         try{
-            server.broadcast(new JSONObject().put("isConstraint",isConstraint).toString());
+            server.broadcast(new JSONObject().put("event","onConstraintBeWithStatusChanged").put("state",isConstraint).toString());
         }catch (JSONException e ){
             e.printStackTrace();
         }
+
     }
 
 
