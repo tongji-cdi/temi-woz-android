@@ -1,3 +1,6 @@
+> **Warning**
+> this doc is out-of-date ,check the new api document
+
 # Temi Wizard-of-Oz Testing
 A Wizard-of-Oz testing application that enables remote-controlling the actions of the Temi robot. Used in our CHI'21 paper "Patterns for Representing Knowledge Graphs to Communicate Situational Knowledge of Service Robots".
 
