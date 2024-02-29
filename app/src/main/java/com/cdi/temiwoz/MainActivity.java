@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -41,8 +42,15 @@ public class MainActivity extends AppCompatActivity implements OnRobotReadyListe
         interfaceView = new WebView(this);
         WebSettings webSettings = interfaceView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportZoom(false);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setBuiltInZoomControls(false);
+
+
+
         setContentView(interfaceView);
 
+        interfaceView.loadUrl("http://baidu.com");
 
         robot = Robot.getInstance();
         robotApi = new RobotApi(robot);

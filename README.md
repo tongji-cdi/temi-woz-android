@@ -12,7 +12,7 @@ In short, you should connect to Temi on your local network and push install the 
 adb connect <TEMI_IP_ADDRESS>:5555
 adb install [option] PATH_OF_APK
 ```
-
+        
 ## Controlling the robot
 There are two ways to control the robot: using pre-made Node-RED nodes and using WebSocket messages. Currently, we support controlling Temi to speak, ask questions, and go to pre-defined locations.
 
